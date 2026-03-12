@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trivia – Projetos Empreendedores</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 32px 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    /* ── TELA INICIAL ── */
+    #screen-start { text-align: center; }
+    #screen-start h1 {
+      font-size: 1.8rem;
+      color: #0f3460;
+      margin-bottom: 8px;
+    }
+    #screen-start p {
+      color: #555;
+      margin-bottom: 28px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* ── JOGO ── */
+    #screen-game { display: none; }
+
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .badge-level {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .badge-easy   { background: #d4edda; color: #155724; }
+    .badge-medium { background: #fff3cd; color: #856404; }
+    .badge-hard   { background: #f8d7da; color: #721c24; }
+
+    .hud-info { font-size: 0.85rem; color: #555; }
+    .hud-score { font-weight: 700; color: #0f3460; font-size: 1rem; }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 6px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0f3460, #e94560);
+      border-radius: 6px;
+      transition: width .4s ease;
+    }
+
+    #question-text {
+      font-size: 1.05rem;
+      color: #1a1a2e;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      min-height: 60px;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      background: #f8f9fa;
+      border: 2px solid #dee2e6;
+      border-radius: 10px;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.93rem;
+      color: #333;
+      cursor: pointer;
+      transition: all .2s;
+      line-height: 1.4;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0f3460;
+      background: #e8eef7;
+    }
+    .option-btn.correct {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+      font-weight: 600;
+    }
+    .option-btn.wrong {
+      background: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+    }
+    .option-btn:disabled { cursor: default; }
+
+    #feedback-box {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: none;
+    }
+    #feedback-box.show-correct { display: block; background: #d4edda; color: #155724; }
+    #feedback-box.show-wrong   { display: block; background: #f8d7da; color: #721c24; }
+
+    #btn-next {
+      margin-top: 18px;
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0f3460, #e94560);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+      transition: opacity .2s;
+    }
+    #btn-next:hover { opacity: .88; }
+
+    /* ── RESULTADO ── */
+    #screen-result { display: none; text-align: center; }
+    #screen-result h2 { font-size: 1.6rem; color: #0f3460; margin-bottom: 10px; }
+    .result-score {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #e94560;
+      margin: 12px 0;
+    }
+    .result-msg {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .result-stats {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+    }
+    .stat-box span { display: block; }
+    .stat-box .stat-val { font-size: 1.5rem; font-weight: 700; color: #0f3460; }
+    .stat-box .stat-lbl { font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 32px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0f3460, #e94560);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: .88; }
+
+    /* ── GAME OVER ── */
+    #screen-gameover { display: none; text-align: center; }
+    #screen-gameover h2 { font-size: 1.5rem; color: #dc3545; margin-bottom: 10px; }
+    #screen-gameover p  { color: #555; margin-bottom: 20px; font-size: 0.93rem; line-height: 1.5; }
+
+    @media (max-width: 420px) {
+      .card { padding: 22px 16px; }
+      #screen-start h1 { font-size: 1.4rem; }
+      .result-score { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="card">
+
+    <!-- TELA INICIAL -->
+    <div id="screen-start">
+      <h1>Trivia<br>Projetos Empreendedores</h1>
+      <p>
+        Teste seus conhecimentos sobre empreendedorismo!<br>
+        São 10 perguntas em 3 níveis de dificuldade.<br>
+        <strong>Se errar, o jogo reinicia com novas perguntas.</strong>
+      </p>
+      <button class="btn-primary" onclick="startGame()">Iniciar Jogo</button>
+    </div>
+
+    <!-- TELA DO JOGO -->
+    <div id="screen-game">
+      <div class="hud">
+        <span id="badge-level" class="badge-level badge-easy">Fácil</span>
+        <span class="hud-info" id="q-counter">Pergunta 1 de 10</span>
+        <span class="hud-score" id="score-display">0 pts</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div id="question-text"></div>
+      <div class="options-grid" id="options-container"></div>
+      <div id="feedback-box"></div>
+      <button id="btn-next" onclick="nextQuestion()">Próxima pergunta →</button>
+    </div>
+
+    <!-- GAME OVER -->
+    <div id="screen-gameover">
+      <h2>Ops! Resposta errada!</h2>
+      <p id="gameover-msg"></p>
+      <button class="btn-primary" onclick="startGame()">Tentar novamente</button>
+    </div>
+
+    <!-- RESULTADO FINAL -->
+    <div id="screen-result">
+      <h2>Jogo Concluído!</h2>
+      <div class="result-score" id="final-score"></div>
+      <p class="result-msg" id="result-msg"></p>
+      <div class="result-stats">
+        <div class="stat-box">
+          <span class="stat-val" id="stat-correct"></span>
+          <span class="stat-lbl">Acertos</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-val" id="stat-total">10</span>
+          <span class="stat-lbl">Perguntas</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-val" id="stat-pct"></span>
+          <span class="stat-lbl">Aproveitamento</span>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="startGame()">Jogar novamente</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  BANCO DE PERGUNTAS (30 questões)
+// ══════════════════════════════════════════════
+const BANK = {
+  easy: [
+    {
+      q: "O que é empreendedorismo?",
+      opts: ["Processo de criar e gerir um novo negócio assumindo riscos", "Trabalhar como funcionário em grande empresa", "Investir apenas em ações da bolsa", "Herdar um negócio da família"],
+      a: 0,
+      fb: "Empreendedorismo é o processo de identificar oportunidades, criar e gerir negócios, assumindo riscos em busca de resultados."
+    },
+    {
+      q: "O que é um empreendedor?",
+      opts: ["Pessoa que identifica oportunidades e cria soluções no mercado", "Funcionário com carteira assinada", "Apenas investidores de grandes corporações", "Quem compra franquias prontas"],
+      a: 0,
+      fb: "O empreendedor é aquele que transforma ideias em soluções, assume riscos e busca oportunidades onde outros veem problemas."
+    },
+    {
+      q: "O que significa MVP no contexto empreendedor?",
+      opts: ["Produto Mínimo Viável", "Máximo Valor Produzido", "Meta de Vendas Projetadas", "Modelo de Variação de Preço"],
+      a: 0,
+      fb: "MVP (Minimum Viable Product) é a versão mais simples de um produto capaz de ser lançada para testar a aceitação do mercado."
+    },
+    {
+      q: "Qual documento descreve o planejamento completo de um negócio?",
+      opts: ["Plano de Negócios", "Nota Fiscal", "Contrato de Trabalho", "Relatório Contábil"],
+      a: 0,
+      fb: "O Plano de Negócios é o documento que organiza objetivos, estratégias, análise de mercado e projeções financeiras de uma empresa."
+    },
+    {
+      q: "O que são clientes no contexto empresarial?",
+      opts: ["Pessoas ou empresas que compram produtos ou serviços", "Fornecedores de matéria-prima", "Funcionários da empresa", "Sócios do negócio"],
+      a: 0,
+      fb: "Clientes são o público que consome os produtos ou serviços oferecidos pela empresa — são a razão de existir de qualquer negócio."
+    },
+    {
+      q: "O que é lucro?",
+      opts: ["Diferença positiva entre receitas e despesas", "Total de vendas realizadas", "Capital investido pelos sócios", "Dívidas a pagar no mês"],
+      a: 0,
+      fb: "Lucro é o resultado positivo quando as receitas superam os custos e despesas do negócio."
+    },
+    {
+      q: "O que é um nicho de mercado?",
+      opts: ["Segmento específico de clientes com necessidades particulares", "Qualquer tipo de mercado existente", "Mercado voltado apenas para exportação", "Conjunto de concorrentes diretos"],
+      a: 0,
+      fb: "Nicho é um segmento menor e específico dentro de um mercado maior, com características e necessidades bem definidas."
+    },
+    {
+      q: "Para que serve a pesquisa de mercado?",
+      opts: ["Entender o público-alvo e identificar oportunidades", "Contratar funcionários", "Calcular impostos devidos", "Registrar a empresa no CNPJ"],
+      a: 0,
+      fb: "A pesquisa de mercado fornece dados sobre clientes, concorrentes e tendências, reduzindo riscos nas decisões do negócio."
+    },
+    {
+      q: "O que é capital de giro?",
+      opts: ["Dinheiro necessário para manter as operações diárias da empresa", "Investimento em máquinas e equipamentos", "Valor das ações da empresa", "Reserva para pagamento de impostos anuais"],
+      a: 0,
+      fb: "Capital de giro é o recurso financeiro usado para cobrir despesas do dia a dia como salários, estoque e contas a pagar."
+    },
+    {
+      q: "O que é uma startup?",
+      opts: ["Empresa jovem de alto potencial de crescimento e inovação", "Empresa pública do governo", "Multinacional com mais de 50 anos", "Cooperativa de trabalhadores rurais"],
+      a: 0,
+      fb: "Startup é uma empresa nascente que busca um modelo de negócio escalável, geralmente ligada à tecnologia e inovação."
+    }
+  ],
+  medium: [
+    {
+      q: "O que analisa a matriz SWOT em um projeto empreendedor?",
+      opts: ["Forças, Fraquezas, Oportunidades e Ameaças", "Salários, Vendas, Operações e Tributação", "Setores, Worklows, Ofertas e Tecnologias", "Sócios, Witness, Objetivos e Tarefas"],
+      a: 0,
+      fb: "A Matriz SWOT analisa fatores internos (Forças e Fraquezas) e externos (Oportunidades e Ameaças) ao negócio."
+    },
+    {
+      q: "O que é proposta de valor para um negócio?",
+      opts: ["Benefício único que justifica a escolha do cliente pelo produto ou serviço", "Preço mais baixo do mercado", "Quantidade de produtos ofertados", "Prazo de entrega garantido"],
+      a: 0,
+      fb: "A proposta de valor responde à pergunta: 'Por que o cliente deveria escolher você e não o concorrente?'"
+    },
+    {
+      q: "O que é ponto de equilíbrio (break-even) em um negócio?",
+      opts: ["Nível de vendas em que receitas e custos se igualam, sem lucro nem prejuízo", "Momento em que a empresa fecha as portas", "Valor máximo que um produto pode custar", "Meta de vendas do próximo semestre"],
+      a: 0,
+      fb: "O ponto de equilíbrio indica o volume mínimo de vendas necessário para cobrir todos os custos sem prejuízo."
+    },
+    {
+      q: "Qual a diferença entre custo fixo e custo variável?",
+      opts: ["Fixo não muda com o volume produzido; variável aumenta ou diminui conforme a produção", "Fixo é pago anualmente; variável é pago diariamente", "Fixo é imposto; variável é salário", "Não há diferença prática entre eles"],
+      a: 0,
+      fb: "Custos fixos (aluguel, salários) existem independentemente do volume produzido. Custos variáveis (matéria-prima) crescem com a produção."
+    },
+    {
+      q: "O que é o Canvas de Modelo de Negócios?",
+      opts: ["Ferramenta visual que organiza os elementos fundamentais de um negócio em nove blocos", "Software de gestão financeira empresarial", "Tipo de contrato entre sócios", "Modelo de planilha de fluxo de caixa"],
+      a: 0,
+      fb: "O Business Model Canvas é uma ferramenta estratégica criada por Osterwalder para mapear visualmente como uma empresa cria, entrega e captura valor."
+    },
+    {
+      q: "O que é pitch em empreendedorismo?",
+      opts: ["Apresentação curta e objetiva de um negócio para investidores ou parceiros", "Relatório financeiro anual da empresa", "Contrato de prestação de serviços", "Processo de registro de marca"],
+      a: 0,
+      fb: "O pitch é uma apresentação breve (geralmente de 1 a 5 minutos) que comunica a ideia do negócio de forma clara e convincente."
+    },
+    {
+      q: "O que diferencia um empreendedor de um gerente?",
+      opts: ["O empreendedor cria e assume riscos; o gerente administra o que já existe", "Apenas o salário recebido por cada um", "O empreendedor trabalha menos horas", "O gerente sempre tem mais autoridade"],
+      a: 0,
+      fb: "O empreendedor inova, cria e assume riscos. O gerente otimiza processos e administra recursos dentro de estruturas já estabelecidas."
+    },
+    {
+      q: "O que é escalabilidade em um modelo de negócio?",
+      opts: ["Capacidade de crescer o faturamento sem aumentar proporcionalmente os custos", "Quantidade de funcionários contratados", "Número de filiais abertas", "Valor do financiamento obtido"],
+      a: 0,
+      fb: "Um negócio escalável consegue crescer em receita sem precisar aumentar custos na mesma proporção — é a base dos negócios digitais."
+    },
+    {
+      q: "O que é público-alvo em marketing empreendedor?",
+      opts: ["Grupo específico de pessoas com perfil mais provável de comprar o produto ou serviço", "Todos os habitantes de uma cidade", "Apenas clientes que já compraram antes", "Fornecedores e parceiros do negócio"],
+      a: 0,
+      fb: "O público-alvo é o segmento de pessoas com características comuns (idade, renda, hábitos) que o produto foi pensado para atender."
+    },
+    {
+      q: "O que é fluxo de caixa?",
+      opts: ["Registro das entradas e saídas de dinheiro da empresa ao longo do tempo", "Lucro anual distribuído entre os sócios", "Valor total dos ativos da empresa", "Saldo devedor em banco"],
+      a: 0,
+      fb: "O fluxo de caixa controla todo o dinheiro que entra e sai da empresa, sendo essencial para evitar crises de liquidez."
+    }
+  ],
+  hard: [
+    {
+      q: "Como o conceito de 'lean startup' de Eric Ries contribui para reduzir riscos em novos negócios?",
+      opts: ["Propõe ciclos curtos de construção, medição e aprendizado para validar hipóteses antes de investir em escala", "Indica contratar apenas funcionários com experiência mínima de 10 anos", "Defende o planejamento detalhado antes de qualquer ação no mercado", "Sugere copiar modelos de negócio já consolidados em outros países"],
+      a: 0,
+      fb: "A Lean Startup substitui planos longos por ciclos rápidos de experimentação (Build-Measure-Learn), reduzindo desperdício e ajustando o produto com base em dados reais."
+    },
+    {
+      q: "Em um plano financeiro, qual a diferença entre DRE e Balanço Patrimonial?",
+      opts: ["DRE mostra resultado de um período (lucro/prejuízo); Balanço Patrimonial apresenta a posição financeira em uma data específica", "DRE é obrigatório apenas para empresas públicas; Balanço é exclusivo para MEIs", "Ambos apresentam as mesmas informações em formatos distintos", "DRE analisa o mercado externo; Balanço analisa o mercado interno"],
+      a: 0,
+      fb: "A DRE (Demonstração do Resultado do Exercício) apura o lucro ou prejuízo num período. O Balanço Patrimonial fotografa ativos, passivos e patrimônio líquido em uma data."
+    },
+    {
+      q: "O que é 'ocean blue strategy' e como ela se aplica ao empreendedorismo?",
+      opts: ["Estratégia de criar mercados inexplorados onde a concorrência é irrelevante, diferenciando-se radicalmente", "Estratégia de competir agressivamente em mercados saturados por preço baixo", "Modelo de expansão exclusivo para empresas de turismo náutico", "Abordagem de marketing voltada para consumidores da classe A"],
+      a: 0,
+      fb: "A Estratégia do Oceano Azul (Kim & Mauborgne) propõe criar novos espaços de mercado inexplorados em vez de disputar mercados saturados (oceanos vermelhos)."
+    },
+    {
+      q: "O que é valuation e por que importa para um empreendedor que busca investimento?",
+      opts: ["É a estimativa do valor de mercado de uma empresa, determinando quanto cada investidor recebe em troca de sua participação", "É o custo total para registrar uma empresa no Brasil", "É o processo de avaliação de funcionários por desempenho", "É a análise do valor dos estoques ao final do ano fiscal"],
+      a: 0,
+      fb: "Valuation define quanto a empresa 'vale'. Ele determina a fatia de participação cedida ao investidor em troca do capital aportado — negociar bem o valuation protege o controle do fundador."
+    },
+    {
+      q: "Como o design thinking se diferencia das abordagens tradicionais de solução de problemas no empreendedorismo?",
+      opts: ["Centra o processo no usuário final, usando empatia, prototipagem rápida e teste iterativo em vez de soluções lineares baseadas em dados históricos", "Foca exclusivamente em redução de custos operacionais", "Aplica algoritmos matemáticos para otimizar processos produtivos", "Prioriza a experiência dos gestores seniores acima das necessidades dos clientes"],
+      a: 0,
+      fb: "O Design Thinking resolve problemas a
+
