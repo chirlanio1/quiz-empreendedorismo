@@ -21,147 +21,298 @@
 
     .card {
       background: #ffffff;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 32px 28px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.45);
     }
 
+    /* ── TELA INICIAL ── */
     #screen-start { text-align: center; }
-    #screen-start h1 { font-size: 1.8rem; color: #0f3460; margin-bottom: 8px; }
-    #screen-start p { color: #555; margin-bottom: 28px; font-size: 0.95rem; line-height: 1.5; }
 
+    .start-icon {
+      font-size: 4rem;
+      margin-bottom: 12px;
+      animation: bounce 1.6s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    #screen-start h1 {
+      font-size: 1.9rem;
+      color: #0f3460;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .subtitle {
+      font-size: 0.85rem;
+      color: #e94560;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    #screen-start p {
+      color: #555;
+      margin-bottom: 28px;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      background: #f8f9fa;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border-left: 4px solid #e94560;
+    }
+
+    .rules-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .rule-chip {
+      background: #f0f4ff;
+      border: 1.5px solid #c8d8ff;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      color: #0f3460;
+      font-weight: 600;
+    }
+
+    /* ── JOGO ── */
     #screen-game { display: none; }
 
     .hud {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
     .badge-level {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 5px 13px;
       border-radius: 20px;
       text-transform: uppercase;
-      letter-spacing: .5px;
+      letter-spacing: .6px;
     }
     .badge-easy   { background: #d4edda; color: #155724; }
     .badge-medium { background: #fff3cd; color: #856404; }
     .badge-hard   { background: #f8d7da; color: #721c24; }
 
-    .hud-info  { font-size: 0.85rem; color: #555; }
-    .hud-score { font-weight: 700; color: #0f3460; font-size: 1rem; }
+    .hud-info  { font-size: 0.82rem; color: #666; }
+    .hud-score {
+      font-weight: 800;
+      color: #0f3460;
+      font-size: 1rem;
+      background: #f0f4ff;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
 
+    .progress-wrap { margin-bottom: 20px; }
     .progress-bar {
       width: 100%;
-      height: 6px;
+      height: 8px;
       background: #e9ecef;
-      border-radius: 6px;
-      margin-bottom: 22px;
+      border-radius: 8px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, #0f3460, #e94560);
-      border-radius: 6px;
-      transition: width .4s ease;
+      border-radius: 8px;
+      transition: width .5s cubic-bezier(.4,0,.2,1);
     }
+    .progress-label {
+      font-size: 0.72rem;
+      color: #aaa;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .points-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .points-easy   { background: #d4edda; color: #155724; }
+    .points-medium { background: #fff3cd; color: #856404; }
+    .points-hard   { background: #f8d7da; color: #721c24; }
 
     #question-text {
       font-size: 1.05rem;
       color: #1a1a2e;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      min-height: 60px;
+      line-height: 1.65;
+      margin-bottom: 18px;
+      font-weight: 600;
     }
 
-    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    .options-grid { display: flex; flex-direction: column; gap: 9px; }
 
     .option-btn {
       background: #f8f9fa;
-      border: 2px solid #dee2e6;
-      border-radius: 10px;
-      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 11px 16px;
       text-align: left;
-      font-size: 0.93rem;
+      font-size: 0.91rem;
       color: #333;
       cursor: pointer;
-      transition: all .2s;
+      transition: all .18s;
       line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .option-btn:hover:not(:disabled) { border-color: #0f3460; background: #e8eef7; }
-    .option-btn.correct { background: #d4edda; border-color: #28a745; color: #155724; font-weight: 600; }
-    .option-btn.wrong   { background: #f8d7da; border-color: #dc3545; color: #721c24; }
-    .option-btn:disabled { cursor: default; }
+    .option-letter {
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #555;
+      font-weight: 800;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all .18s;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0f3460;
+      background: #eef2ff;
+      transform: translateX(3px);
+    }
+    .option-btn:hover:not(:disabled) .option-letter {
+      background: #0f3460;
+      color: #fff;
+    }
+    .option-btn.correct {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+      font-weight: 600;
+    }
+    .option-btn.correct .option-letter {
+      background: #28a745;
+      color: #fff;
+    }
+    .option-btn.wrong {
+      background: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+    }
+    .option-btn.wrong .option-letter {
+      background: #dc3545;
+      color: #fff;
+    }
+    .option-btn:disabled { cursor: default; transform: none; }
 
     #feedback-box {
-      margin-top: 14px;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      line-height: 1.5;
+      margin-top: 13px;
+      padding: 11px 15px;
+      border-radius: 10px;
+      font-size: 0.87rem;
+      line-height: 1.55;
       display: none;
+      animation: fadeIn .3s ease;
     }
-    #feedback-box.show-correct { display: block; background: #d4edda; color: #155724; }
-    #feedback-box.show-wrong   { display: block; background: #f8d7da; color: #721c24; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
+
+    #feedback-box.show-correct { display: block; background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+    #feedback-box.show-wrong   { display: block; background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
 
     #btn-next {
-      margin-top: 18px;
+      margin-top: 16px;
       width: 100%;
       padding: 13px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #0f3460, #e94560);
       color: #fff;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: none;
-      transition: opacity .2s;
+      transition: opacity .2s, transform .15s;
+      letter-spacing: .3px;
     }
-    #btn-next:hover { opacity: .88; }
+    #btn-next:hover { opacity: .9; transform: translateY(-1px); }
 
-    #screen-result   { display: none; text-align: center; }
+    /* ── STREAK ── */
+    .streak-bar {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 16px;
+      justify-content: center;
+    }
+    .streak-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      transition: background .3s;
+    }
+    .streak-dot.done-correct { background: #28a745; }
+    .streak-dot.done-wrong   { background: #dc3545; }
+    .streak-dot.active       { background: #0f3460; box-shadow: 0 0 0 3px rgba(15,52,96,.2); }
+
+    /* ── GAME OVER ── */
     #screen-gameover { display: none; text-align: center; }
-
-    #screen-result h2   { font-size: 1.6rem; color: #0f3460; margin-bottom: 10px; }
+    .gameover-icon { font-size: 3.5rem; margin-bottom: 10px; }
     #screen-gameover h2 { font-size: 1.5rem; color: #dc3545; margin-bottom: 10px; }
-    #screen-gameover p  { color: #555; margin-bottom: 20px; font-size: 0.93rem; line-height: 1.5; }
+    #screen-gameover p  { color: #555; margin-bottom: 22px; font-size: 0.93rem; line-height: 1.6; background: #fff3f3; padding: 14px; border-radius: 10px; }
 
-    .result-score { font-size: 3rem; font-weight: 800; color: #e94560; margin: 12px 0; }
-    .result-msg   { color: #555; font-size: 0.95rem; margin-bottom: 24px; line-height: 1.6; }
+    /* ── RESULTADO ── */
+    #screen-result { display: none; text-align: center; }
+    .result-icon { font-size: 3.5rem; margin-bottom: 10px; }
+    #screen-result h2 { font-size: 1.6rem; color: #0f3460; margin-bottom: 6px; }
+    .result-score { font-size: 3rem; font-weight: 800; color: #e94560; margin: 10px 0; }
+    .result-msg   { color: #555; font-size: 0.93rem; margin-bottom: 22px; line-height: 1.6; background: #f8f9fa; padding: 12px 16px; border-radius: 10px; }
 
     .result-stats {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 14px;
       margin-bottom: 24px;
       flex-wrap: wrap;
     }
-    .stat-box { background: #f8f9fa; border-radius: 10px; padding: 12px 20px; text-align: center; }
-    .stat-box span { display: block; }
-    .stat-box .stat-val { font-size: 1.5rem; font-weight: 700; color: #0f3460; }
-    .stat-box .stat-lbl { font-size: 0.75rem; color: #888; margin-top: 2px; }
+    .stat-box {
+      background: #f0f4ff;
+      border: 1.5px solid #c8d8ff;
+      border-radius: 12px;
+      padding: 12px 20px;
+      text-align: center;
+      min-width: 80px;
+    }
+    .stat-val { font-size: 1.5rem; font-weight: 800; color: #0f3460; display: block; }
+    .stat-lbl { font-size: 0.72rem; color: #888; margin-top: 2px; display: block; }
 
     .btn-primary {
       display: inline-block;
-      padding: 13px 32px;
+      padding: 13px 36px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #0f3460, #e94560);
       color: #fff;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: opacity .2s;
+      transition: opacity .2s, transform .15s;
+      letter-spacing: .3px;
     }
-    .btn-primary:hover { opacity: .88; }
+    .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
 
     @media (max-width: 420px) {
-      .card { padding: 22px 16px; }
-      #screen-start h1 { font-size: 1.4rem; }
+      .card { padding: 20px 14px; }
+      #screen-start h1 { font-size: 1.45rem; }
       .result-score { font-size: 2.4rem; }
+      .rules-row { gap: 8px; }
     }
   </style>
 </head>
@@ -169,37 +320,58 @@
 <div id="app">
   <div class="card">
 
+    <!-- TELA INICIAL -->
     <div id="screen-start">
-      <h1>Trivia<br>Projetos Empreendedores</h1>
-      <p>Teste seus conhecimentos sobre empreendedorismo!<br>
-         São 10 perguntas em 3 níveis de dificuldade.<br>
-         <strong>Se errar, o jogo reinicia com novas perguntas.</strong></p>
-      <button class="btn-primary" onclick="startGame()">Iniciar Jogo</button>
+      <div class="start-icon">🚀</div>
+      <h1>Trivia</h1>
+      <div class="subtitle">Projetos Empreendedores</div>
+      <p>
+        Teste seus conhecimentos sobre empreendedorismo!<br>
+        <strong>Se errar uma questão, o jogo reinicia com novas perguntas.</strong>
+      </p>
+      <div class="rules-row">
+        <span class="rule-chip">10 perguntas</span>
+        <span class="rule-chip">3 níveis</span>
+        <span class="rule-chip">Fácil +5 pts</span>
+        <span class="rule-chip">Médio +10 pts</span>
+        <span class="rule-chip">Difícil +20 pts</span>
+      </div>
+      <button class="btn-primary" onclick="startGame()">Vamos começar!</button>
     </div>
 
+    <!-- TELA DO JOGO -->
     <div id="screen-game">
       <div class="hud">
         <span id="badge-level" class="badge-level badge-easy">Fácil</span>
-        <span class="hud-info" id="q-counter">Pergunta 1 de 10</span>
+        <span class="hud-info" id="q-counter">1 / 10</span>
         <span class="hud-score" id="score-display">0 pts</span>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-label" id="progress-label">0% concluído</div>
       </div>
+      <div class="streak-bar" id="streak-bar"></div>
+      <div id="points-badge" class="points-badge points-easy">+5 pontos</div>
       <div id="question-text"></div>
       <div class="options-grid" id="options-container"></div>
       <div id="feedback-box"></div>
       <button id="btn-next" onclick="nextQuestion()">Próxima pergunta →</button>
     </div>
 
+    <!-- GAME OVER -->
     <div id="screen-gameover">
+      <div class="gameover-icon">😬</div>
       <h2>Ops! Resposta errada!</h2>
       <p id="gameover-msg"></p>
       <button class="btn-primary" onclick="startGame()">Tentar novamente</button>
     </div>
 
+    <!-- RESULTADO FINAL -->
     <div id="screen-result">
-      <h2>Jogo Concluído!</h2>
+      <div class="result-icon" id="result-icon">🏆</div>
+      <h2 id="result-title">Jogo Concluído!</h2>
       <div class="result-score" id="final-score"></div>
       <p class="result-msg" id="result-msg"></p>
       <div class="result-stats">
@@ -223,50 +395,60 @@
 </div>
 
 <script>
+// ══════════════════════════════════════════════
+//  BANCO DE PERGUNTAS
+//  Cada questão tem:
+//  q   = enunciado
+//  opts= array com 4 opções (ordem fixa no banco)
+//  a   = índice da resposta correta NO ARRAY opts
+//  fb  = feedback explicativo
+// ══════════════════════════════════════════════
 const BANK = {
   easy: [
-    { q: "O que é empreendedorismo?", opts: ["Processo de criar e gerir um novo negócio assumindo riscos","Trabalhar como funcionário em grande empresa","Investir apenas em ações da bolsa","Herdar um negócio da família"], a: 0, fb: "Empreendedorismo é o processo de identificar oportunidades, criar e gerir negócios assumindo riscos em busca de resultados." },
-    { q: "O que é um empreendedor?", opts: ["Pessoa que identifica oportunidades e cria soluções no mercado","Funcionário com carteira assinada","Apenas investidores de grandes corporações","Quem compra franquias prontas"], a: 0, fb: "O empreendedor transforma ideias em soluções, assume riscos e busca oportunidades onde outros veem problemas." },
-    { q: "O que significa MVP no contexto empreendedor?", opts: ["Produto Mínimo Viável","Máximo Valor Produzido","Meta de Vendas Projetadas","Modelo de Variação de Preço"], a: 0, fb: "MVP (Minimum Viable Product) é a versão mais simples de um produto capaz de testar a aceitação do mercado." },
-    { q: "Qual documento descreve o planejamento completo de um negócio?", opts: ["Plano de Negócios","Nota Fiscal","Contrato de Trabalho","Relatório Contábil"], a: 0, fb: "O Plano de Negócios organiza objetivos, estratégias, análise de mercado e projeções financeiras de uma empresa." },
-    { q: "O que são clientes no contexto empresarial?", opts: ["Pessoas ou empresas que compram produtos ou serviços","Fornecedores de matéria-prima","Funcionários da empresa","Sócios do negócio"], a: 0, fb: "Clientes são o público que consome os produtos ou serviços — são a razão de existir de qualquer negócio." },
-    { q: "O que é lucro?", opts: ["Diferença positiva entre receitas e despesas","Total de vendas realizadas","Capital investido pelos sócios","Dívidas a pagar no mês"], a: 0, fb: "Lucro é o resultado positivo quando as receitas superam os custos e despesas do negócio." },
-    { q: "O que é um nicho de mercado?", opts: ["Segmento específico de clientes com necessidades particulares","Qualquer tipo de mercado existente","Mercado voltado apenas para exportação","Conjunto de concorrentes diretos"], a: 0, fb: "Nicho é um segmento menor e específico dentro de um mercado maior, com características e necessidades bem definidas." },
-    { q: "Para que serve a pesquisa de mercado?", opts: ["Entender o público-alvo e identificar oportunidades","Contratar funcionários","Calcular impostos devidos","Registrar a empresa no CNPJ"], a: 0, fb: "A pesquisa de mercado fornece dados sobre clientes, concorrentes e tendências, reduzindo riscos nas decisões." },
-    { q: "O que é capital de giro?", opts: ["Dinheiro necessário para manter as operações diárias da empresa","Investimento em máquinas e equipamentos","Valor das ações da empresa","Reserva para pagamento de impostos anuais"], a: 0, fb: "Capital de giro é o recurso usado para cobrir despesas do dia a dia como salários, estoque e contas a pagar." },
-    { q: "O que é uma startup?", opts: ["Empresa jovem de alto potencial de crescimento e inovação","Empresa pública do governo","Multinacional com mais de 50 anos","Cooperativa de trabalhadores rurais"], a: 0, fb: "Startup é uma empresa nascente que busca um modelo de negócio escalável, geralmente ligada à inovação." }
+    { q:"O que é empreendedorismo?", opts:["Herdar um negócio da família","Trabalhar como funcionário em grande empresa","Processo de criar e gerir um negócio assumindo riscos","Investir apenas em ações da bolsa"], a:2, fb:"Empreendedorismo é o processo de identificar oportunidades, criar e gerir negócios assumindo riscos em busca de resultados." },
+    { q:"O que é um empreendedor?", opts:["Funcionário com carteira assinada","Pessoa que identifica oportunidades e cria soluções no mercado","Apenas investidores de grandes corporações","Quem compra franquias prontas"], a:1, fb:"O empreendedor transforma ideias em soluções, assume riscos e busca oportunidades onde outros veem problemas." },
+    { q:"O que significa MVP no contexto empreendedor?", opts:["Máximo Valor Produzido","Meta de Vendas Projetadas","Modelo de Variação de Preço","Produto Mínimo Viável"], a:3, fb:"MVP (Minimum Viable Product) é a versão mais simples de um produto capaz de testar a aceitação do mercado." },
+    { q:"Qual documento descreve o planejamento completo de um negócio?", opts:["Plano de Negócios","Nota Fiscal","Contrato de Trabalho","Relatório Contábil"], a:0, fb:"O Plano de Negócios organiza objetivos, estratégias, análise de mercado e projeções financeiras de uma empresa." },
+    { q:"O que são clientes no contexto empresarial?", opts:["Funcionários da empresa","Fornecedores de matéria-prima","Sócios do negócio","Pessoas ou empresas que compram produtos ou serviços"], a:3, fb:"Clientes são o público que consome os produtos ou serviços — são a razão de existir de qualquer negócio." },
+    { q:"O que é lucro?", opts:["Capital investido pelos sócios","Dívidas a pagar no mês","Diferença positiva entre receitas e despesas","Total de vendas realizadas"], a:2, fb:"Lucro é o resultado positivo quando as receitas superam os custos e despesas do negócio." },
+    { q:"O que é um nicho de mercado?", opts:["Mercado voltado apenas para exportação","Segmento específico de clientes com necessidades particulares","Conjunto de concorrentes diretos","Qualquer tipo de mercado existente"], a:1, fb:"Nicho é um segmento menor e específico dentro de um mercado maior, com características e necessidades bem definidas." },
+    { q:"Para que serve a pesquisa de mercado?", opts:["Calcular impostos devidos","Registrar a empresa no CNPJ","Contratar funcionários","Entender o público-alvo e identificar oportunidades"], a:3, fb:"A pesquisa de mercado fornece dados sobre clientes, concorrentes e tendências, reduzindo riscos nas decisões." },
+    { q:"O que é capital de giro?", opts:["Reserva para pagamento de impostos anuais","Investimento em máquinas e equipamentos","Dinheiro necessário para manter as operações diárias da empresa","Valor das ações da empresa"], a:2, fb:"Capital de giro é o recurso usado para cobrir despesas do dia a dia como salários, estoque e contas a pagar." },
+    { q:"O que é uma startup?", opts:["Empresa pública do governo","Cooperativa de trabalhadores rurais","Multinacional com mais de 50 anos","Empresa jovem de alto potencial de crescimento e inovação"], a:3, fb:"Startup é uma empresa nascente que busca um modelo de negócio escalável, geralmente ligada à inovação." }
   ],
   medium: [
-    { q: "O que analisa a matriz SWOT?", opts: ["Forças, Fraquezas, Oportunidades e Ameaças","Salários, Vendas, Operações e Tributação","Setores, Workflows, Ofertas e Tecnologias","Sócios, Witness, Objetivos e Tarefas"], a: 0, fb: "A Matriz SWOT analisa fatores internos (Forças e Fraquezas) e externos (Oportunidades e Ameaças) ao negócio." },
-    { q: "O que é proposta de valor para um negócio?", opts: ["Benefício único que justifica a escolha do cliente pelo produto","Preço mais baixo do mercado","Quantidade de produtos ofertados","Prazo de entrega garantido"], a: 0, fb: "A proposta de valor responde: 'Por que o cliente deveria escolher você e não o concorrente?'" },
-    { q: "O que é ponto de equilíbrio (break-even)?", opts: ["Nível de vendas em que receitas e custos se igualam","Momento em que a empresa fecha as portas","Valor máximo que um produto pode custar","Meta de vendas do próximo semestre"], a: 0, fb: "O ponto de equilíbrio indica o volume mínimo de vendas para cobrir todos os custos sem prejuízo." },
-    { q: "Qual a diferença entre custo fixo e custo variável?", opts: ["Fixo não muda com o volume produzido; variável aumenta conforme a produção","Fixo é pago anualmente; variável é pago diariamente","Fixo é imposto; variável é salário","Não há diferença prática entre eles"], a: 0, fb: "Custos fixos (aluguel) existem independente do volume produzido. Custos variáveis (matéria-prima) crescem com a produção." },
-    { q: "O que é o Canvas de Modelo de Negócios?", opts: ["Ferramenta visual que organiza os elementos fundamentais de um negócio em nove blocos","Software de gestão financeira empresarial","Tipo de contrato entre sócios","Modelo de planilha de fluxo de caixa"], a: 0, fb: "O Business Model Canvas mapeia visualmente como uma empresa cria, entrega e captura valor." },
-    { q: "O que é pitch em empreendedorismo?", opts: ["Apresentação curta e objetiva de um negócio para investidores ou parceiros","Relatório financeiro anual da empresa","Contrato de prestação de serviços","Processo de registro de marca"], a: 0, fb: "O pitch é uma apresentação breve que comunica a ideia do negócio de forma clara e convincente." },
-    { q: "O que diferencia um empreendedor de um gerente?", opts: ["O empreendedor cria e assume riscos; o gerente administra o que já existe","Apenas o salário recebido por cada um","O empreendedor trabalha menos horas","O gerente sempre tem mais autoridade"], a: 0, fb: "O empreendedor inova e assume riscos. O gerente otimiza processos dentro de estruturas já estabelecidas." },
-    { q: "O que é escalabilidade em um modelo de negócio?", opts: ["Capacidade de crescer o faturamento sem aumentar proporcionalmente os custos","Quantidade de funcionários contratados","Número de filiais abertas","Valor do financiamento obtido"], a: 0, fb: "Um negócio escalável cresce em receita sem precisar aumentar custos na mesma proporção." },
-    { q: "O que é público-alvo em marketing empreendedor?", opts: ["Grupo específico de pessoas com perfil mais provável de comprar o produto","Todos os habitantes de uma cidade","Apenas clientes que já compraram antes","Fornecedores e parceiros do negócio"], a: 0, fb: "O público-alvo é o segmento com características comuns que o produto foi pensado para atender." },
-    { q: "O que é fluxo de caixa?", opts: ["Registro das entradas e saídas de dinheiro da empresa ao longo do tempo","Lucro anual distribuído entre os sócios","Valor total dos ativos da empresa","Saldo devedor em banco"], a: 0, fb: "O fluxo de caixa controla todo o dinheiro que entra e sai da empresa, essencial para evitar crises de liquidez." }
+    { q:"O que analisa a Matriz SWOT?", opts:["Setores, Workflows, Ofertas e Tecnologias","Sócios, Witness, Objetivos e Tarefas","Salários, Vendas, Operações e Tributação","Forças, Fraquezas, Oportunidades e Ameaças"], a:3, fb:"A Matriz SWOT analisa fatores internos (Forças e Fraquezas) e externos (Oportunidades e Ameaças) ao negócio." },
+    { q:"O que é proposta de valor para um negócio?", opts:["Benefício único que justifica a escolha do cliente pelo produto","Prazo de entrega garantido","Preço mais baixo do mercado","Quantidade de produtos ofertados"], a:0, fb:"A proposta de valor responde: 'Por que o cliente deveria escolher você e não o concorrente?'" },
+    { q:"O que é ponto de equilíbrio (break-even)?", opts:["Meta de vendas do próximo semestre","Valor máximo que um produto pode custar","Nível de vendas em que receitas e custos se igualam, sem lucro nem prejuízo","Momento em que a empresa fecha as portas"], a:2, fb:"O ponto de equilíbrio indica o volume mínimo de vendas necessário para cobrir todos os custos sem prejuízo." },
+    { q:"Qual a diferença entre custo fixo e custo variável?", opts:["Não há diferença prática entre eles","Fixo é imposto; variável é salário","Fixo é pago anualmente; variável é pago diariamente","Fixo não muda com o volume produzido; variável aumenta conforme a produção"], a:3, fb:"Custos fixos (aluguel) existem independente do volume produzido. Custos variáveis (matéria-prima) crescem com a produção." },
+    { q:"O que é o Canvas de Modelo de Negócios?", opts:["Modelo de planilha de fluxo de caixa","Ferramenta visual que organiza os elementos fundamentais de um negócio em nove blocos","Tipo de contrato entre sócios","Software de gestão financeira empresarial"], a:1, fb:"O Business Model Canvas mapeia visualmente como uma empresa cria, entrega e captura valor — criado por Osterwalder." },
+    { q:"O que é pitch em empreendedorismo?", opts:["Contrato de prestação de serviços","Processo de registro de marca","Apresentação curta e objetiva de um negócio para investidores ou parceiros","Relatório financeiro anual da empresa"], a:2, fb:"O pitch é uma apresentação breve que comunica a ideia do negócio de forma clara e convincente, geralmente de 1 a 5 minutos." },
+    { q:"O que diferencia um empreendedor de um gerente?", opts:["O gerente sempre tem mais autoridade","O empreendedor trabalha menos horas","Apenas o salário recebido por cada um","O empreendedor cria e assume riscos; o gerente administra o que já existe"], a:3, fb:"O empreendedor inova e assume riscos. O gerente otimiza processos dentro de estruturas já estabelecidas." },
+    { q:"O que é escalabilidade em um modelo de negócio?", opts:["Valor do financiamento obtido","Capacidade de crescer o faturamento sem aumentar proporcionalmente os custos","Quantidade de funcionários contratados","Número de filiais abertas"], a:1, fb:"Um negócio escalável cresce em receita sem precisar aumentar custos na mesma proporção — base dos negócios digitais." },
+    { q:"O que é público-alvo em marketing empreendedor?", opts:["Fornecedores e parceiros do negócio","Todos os habitantes de uma cidade","Apenas clientes que já compraram antes","Grupo específico de pessoas com perfil mais provável de comprar o produto ou serviço"], a:3, fb:"O público-alvo é o segmento com características comuns (idade, renda, hábitos) que o produto foi pensado para atender." },
+    { q:"O que é fluxo de caixa?", opts:["Saldo devedor em banco","Valor total dos ativos da empresa","Registro das entradas e saídas de dinheiro da empresa ao longo do tempo","Lucro anual distribuído entre os sócios"], a:2, fb:"O fluxo de caixa controla todo o dinheiro que entra e sai da empresa, essencial para evitar crises de liquidez." }
   ],
   hard: [
-    { q: "Como o conceito de 'lean startup' reduz riscos em novos negócios?", opts: ["Propõe ciclos curtos de construção, medição e aprendizado para validar hipóteses antes de investir em escala","Indica contratar apenas funcionários com experiência mínima de 10 anos","Defende planejamento detalhado antes de qualquer ação no mercado","Sugere copiar modelos de negócio já consolidados em outros países"], a: 0, fb: "A Lean Startup usa ciclos rápidos de experimentação (Build-Measure-Learn), reduzindo desperdício e ajustando o produto com base em dados reais." },
-    { q: "Em um plano financeiro, qual a diferença entre DRE e Balanço Patrimonial?", opts: ["DRE mostra resultado de um período (lucro/prejuízo); Balanço apresenta a posição financeira em uma data específica","DRE é obrigatório apenas para empresas públicas; Balanço é exclusivo para MEIs","Ambos apresentam as mesmas informações em formatos distintos","DRE analisa o mercado externo; Balanço analisa o mercado interno"], a: 0, fb: "A DRE apura lucro ou prejuízo num período. O Balanço Patrimonial fotografa ativos, passivos e patrimônio líquido em uma data." },
-    { q: "O que é a Estratégia do Oceano Azul e como se aplica ao empreendedorismo?", opts: ["Criar mercados inexplorados onde a concorrência é irrelevante, diferenciando-se radicalmente","Competir agressivamente em mercados saturados por preço baixo","Modelo de expansão exclusivo para empresas de turismo náutico","Abordagem de marketing voltada para consumidores da classe A"], a: 0, fb: "A Estratégia do Oceano Azul propõe criar novos espaços de mercado inexplorados em vez de disputar mercados saturados (oceanos vermelhos)." },
-    { q: "O que é valuation e por que importa para quem busca investimento?", opts: ["Estimativa do valor de mercado de uma empresa, determinando quanto cada investidor recebe em troca de participação","Custo total para registrar uma empresa no Brasil","Processo de avaliação de funcionários por desempenho","Análise do valor dos estoques ao final do ano fiscal"], a: 0, fb: "Valuation define quanto a empresa 'vale'. Ele determina a fatia cedida ao investidor em troca do capital aportado." },
-    { q: "Como o design thinking se diferencia das abordagens tradicionais de solução de problemas?", opts: ["Centra o processo no usuário final, usando empatia, prototipagem rápida e teste iterativo","Foca exclusivamente em redução de custos operacionais","Aplica algoritmos matemáticos para otimizar processos produtivos","Prioriza a experiência dos gestores seniores acima das necessidades dos clientes"], a: 0, fb: "O Design Thinking resolve problemas a partir da empatia com o usuário, testando protótipos rápidos e aprendendo com falhas." },
-    { q: "O que é equity e como é usado em negociações com investidores-anjo?", opts: ["Participação societária cedida ao investidor em troca de capital, sem obrigação de devolução","Empréstimo bancário com juros reduzidos para startups","Valor de mercado dos produtos em estoque","Taxa cobrada por aceleradoras para entrada no programa"], a: 0, fb: "Equity é a cota de participação da empresa. Ao ceder equity, o empreendedor obtém capital sem dívida, mas divide a propriedade." },
-    { q: "O que é uma análise de viabilidade econômico-financeira e quais indicadores ela inclui?", opts: ["Estudo que verifica se o negócio gerará retorno adequado, incluindo TIR, VPL, payback e ponto de equilíbrio","Relatório de marketing que apresenta o público-alvo do produto","Documento que lista os fornecedores e seus preços","Análise do ambiente externo usando apenas a matriz SWOT"], a: 0, fb: "A viabilidade econômico-financeira avalia se o investimento se paga e em quanto tempo, usando TIR, VPL e payback." },
-    { q: "Como a propriedade intelectual protege um negócio inovador?", opts: ["Por meio de patentes, marcas registradas, direitos autorais e segredos industriais que impedem a cópia legal","Apenas pelo registro do contrato social na Junta Comercial","Por meio de acordos informais entre os sócios fundadores","Exclusivamente por cláusulas de confidencialidade em contratos de trabalho"], a: 0, fb: "Patentes, marcas, direitos autorais e segredos industriais protegem a inovação — todos gerenciados pelo INPI no Brasil." },
-    { q: "O que é o modelo de receitas recorrentes (SaaS) e por que é vantajoso para startups?", opts: ["Clientes pagam assinatura periódica, gerando previsibilidade de receita e baixo custo por retenção","Modelo de venda única de produtos físicos com alto valor agregado","Estratégia de cobrar por cada funcionalidade extra utilizada","Sistema de receita baseado exclusivamente em comissões de parceiros"], a: 0, fb: "SaaS gera receita recorrente via assinaturas, significando fluxo de caixa previsível e valorização mais alta no mercado." },
-    { q: "Qual a relação entre intraempreendedorismo e inovação corporativa?", opts: ["Intraempreendedores aplicam mentalidade empreendedora dentro de empresas existentes, gerando inovação sem abrir negócio próprio","Refere-se exclusivamente à criação de filiais internacionais","É o processo de demitir funcionários para contratar empreendedores externos","Significa transformar toda a empresa em uma startup independente"], a: 0, fb: "O intraempreendedor usa criatividade e autonomia dentro de uma organização já existente, sendo agente estratégico de inovação." }
+    { q:"Como o conceito de 'Lean Startup' de Eric Ries reduz riscos em novos negócios?", opts:["Sugere copiar modelos de negócio já consolidados em outros países","Indica contratar apenas funcionários com experiência mínima de 10 anos","Defende planejamento detalhado antes de qualquer ação no mercado","Propõe ciclos curtos de construção, medição e aprendizado para validar hipóteses antes de investir em escala"], a:3, fb:"A Lean Startup usa ciclos rápidos (Build-Measure-Learn), reduzindo desperdício e ajustando o produto com base em dados reais." },
+    { q:"Qual a diferença entre DRE e Balanço Patrimonial em um plano financeiro?", opts:["Ambos apresentam as mesmas informações em formatos distintos","DRE é obrigatório apenas para empresas públicas; Balanço é exclusivo para MEIs","DRE mostra resultado de um período (lucro/prejuízo); Balanço apresenta a posição financeira em uma data específica","DRE analisa o mercado externo; Balanço analisa o mercado interno"], a:2, fb:"A DRE apura lucro ou prejuízo num período. O Balanço Patrimonial fotografa ativos, passivos e patrimônio líquido em uma data." },
+    { q:"O que é a Estratégia do Oceano Azul e como se aplica ao empreendedorismo?", opts:["Abordagem de marketing voltada para consumidores da classe A","Modelo de expansão exclusivo para empresas de turismo náutico","Competir agressivamente em mercados saturados por preço baixo","Criar mercados inexplorados onde a concorrência é irrelevante, diferenciando-se radicalmente"], a:3, fb:"A Estratégia do Oceano Azul (Kim & Mauborgne) propõe criar novos espaços de mercado inexplorados em vez de disputar mercados saturados." },
+    { q:"O que é valuation e por que importa para quem busca investimento?", opts:["Estimativa do valor de mercado de uma empresa, determinando quanto o investidor recebe em troca de participação","Análise do valor dos estoques ao final do ano fiscal","Processo de avaliação de funcionários por desempenho","Custo total para registrar uma empresa no Brasil"], a:0, fb:"Valuation define quanto a empresa 'vale'. Ele determina a fatia cedida ao investidor em troca do capital aportado." },
+    { q:"Como o Design Thinking se diferencia das abordagens tradicionais de solução de problemas?", opts:["Foca exclusivamente em redução de custos operacionais","Aplica algoritmos matemáticos para otimizar processos produtivos","Prioriza a experiência dos gestores seniores acima das necessidades dos clientes","Centra o processo no usuário final, usando empatia, prototipagem rápida e teste iterativo"], a:3, fb:"O Design Thinking resolve problemas a partir da empatia com o usuário, testando protótipos rápidos e aprendendo com falhas." },
+    { q:"O que é equity e como é usado em negociações com investidores-anjo?", opts:["Taxa cobrada por aceleradoras para entrada no programa","Participação societária cedida ao investidor em troca de capital, sem obrigação de devolução","Valor de mercado dos produtos em estoque","Empréstimo bancário com juros reduzidos para startups"], a:1, fb:"Equity é a cota de participação da empresa. Ao ceder equity, o empreendedor obtém capital sem dívida, mas divide a propriedade." },
+    { q:"O que é uma análise de viabilidade econômico-financeira e quais indicadores ela inclui?", opts:["Documento que lista os fornecedores e seus preços","Análise do ambiente externo usando apenas a matriz SWOT","Relatório de marketing que apresenta o público-alvo do produto","Estudo que verifica se o negócio gerará retorno adequado, incluindo TIR, VPL, payback e ponto de equilíbrio"], a:3, fb:"A viabilidade econômico-financeira avalia se o investimento se paga e em quanto tempo, usando TIR, VPL e payback." },
+    { q:"Como a propriedade intelectual protege um negócio inovador?", opts:["Apenas pelo registro do contrato social na Junta Comercial","Por meio de acordos informais entre os sócios fundadores","Por meio de patentes, marcas registradas, direitos autorais e segredos industriais que impedem a cópia legal","Exclusivamente por cláusulas de confidencialidade em contratos de trabalho"], a:2, fb:"Patentes, marcas, direitos autorais e segredos industriais protegem a inovação — todos gerenciados pelo INPI no Brasil." },
+    { q:"O que é o modelo de receitas recorrentes (SaaS) e por que é vantajoso para startups?", opts:["Sistema de receita baseado exclusivamente em comissões de parceiros","Estratégia de cobrar por cada funcionalidade extra utilizada","Modelo de venda única de produtos físicos com alto valor agregado","Clientes pagam assinatura periódica, gerando previsibilidade de receita e baixo custo por retenção"], a:3, fb:"SaaS gera receita recorrente via assinaturas: fluxo de caixa previsível, métricas claras (churn, LTV, CAC) e maior valuation." },
+    { q:"Qual a relação entre intraempreendedorismo e inovação corporativa?", opts:["Significa transformar toda a empresa em uma startup independente","Intraempreendedores aplicam mentalidade empreendedora dentro de empresas existentes, gerando inovação sem abrir negócio próprio","É o processo de demitir funcionários para contratar empreendedores externos","Refere-se exclusivamente à criação de filiais internacionais"], a:1, fb:"O intraempreendedor usa criatividade e autonomia dentro de uma organização já existente, sendo agente estratégico de inovação corporativa." }
   ]
 };
 
-const LEVELS = ['easy','easy','easy','medium','medium','medium','medium','hard','hard','hard'];
-const LABELS = { easy: 'Fácil', medium: 'Médio', hard: 'Difícil' };
-const POINTS = { easy: 5, medium: 10, hard: 20 };
+const LEVELS  = ['easy','easy','easy','medium','medium','medium','medium','hard','hard','hard'];
+const LABELS  = { easy:'Fácil', medium:'Médio', hard:'Difícil' };
+const POINTS  = { easy:5, medium:10, hard:20 };
+const LETTERS = ['A','B','C','D'];
 
 let sequence = [], current = 0, score = 0, correctCount = 0, answered = false;
+let streakState = [];
 
 function shuffle(arr) {
   const a = [...arr];
@@ -277,12 +459,20 @@ function shuffle(arr) {
   return a;
 }
 
+// Embaralha as opções de cada questão mantendo o rastreio da correta
+function prepareQuestion(q) {
+  const indices = [0, 1, 2, 3];
+  const shuffled = shuffle(indices);
+  const newOpts = shuffled.map(i => q.opts[i]);
+  const newCorrect = shuffled.indexOf(q.a);
+  return { q: q.q, opts: newOpts, a: newCorrect, fb: q.fb };
+}
+
 function buildSequence() {
-  return [
-    ...shuffle(BANK.easy).slice(0, 3),
-    ...shuffle(BANK.medium).slice(0, 4),
-    ...shuffle(BANK.hard).slice(0, 3)
-  ];
+  const easy   = shuffle(BANK.easy).slice(0, 3).map(prepareQuestion);
+  const medium = shuffle(BANK.medium).slice(0, 4).map(prepareQuestion);
+  const hard   = shuffle(BANK.hard).slice(0, 3).map(prepareQuestion);
+  return [...easy, ...medium, ...hard];
 }
 
 function showScreen(id) {
@@ -292,12 +482,32 @@ function showScreen(id) {
   document.getElementById(id).style.display = 'block';
 }
 
+function buildStreakBar() {
+  const bar = document.getElementById('streak-bar');
+  bar.innerHTML = '';
+  for (let i = 0; i < sequence.length; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'streak-dot' + (i === 0 ? ' active' : '');
+    dot.id = 'dot-' + i;
+    bar.appendChild(dot);
+  }
+}
+
+function updateStreakBar(index, correct) {
+  const dot = document.getElementById('dot-' + index);
+  if (dot) dot.className = 'streak-dot ' + (correct ? 'done-correct' : 'done-wrong');
+  const next = document.getElementById('dot-' + (index + 1));
+  if (next) next.className = 'streak-dot active';
+}
+
 function startGame() {
   sequence     = buildSequence();
   current      = 0;
   score        = 0;
   correctCount = 0;
+  answered     = false;
   showScreen('screen-game');
+  buildStreakBar();
   renderQuestion();
 }
 
@@ -306,29 +516,35 @@ function renderQuestion() {
   const q     = sequence[current];
   const level = LEVELS[current];
   const total = sequence.length;
+  const pct   = Math.round((current / total) * 100);
 
-  document.getElementById('progress-fill').style.width = ((current / total) * 100) + '%';
-  document.getElementById('q-counter').textContent     = 'Pergunta ' + (current + 1) + ' de ' + total;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '% concluído';
+  document.getElementById('q-counter').textContent = (current + 1) + ' / ' + total;
   document.getElementById('score-display').textContent = score + ' pts';
   document.getElementById('question-text').textContent = q.q;
-  document.getElementById('btn-next').style.display    = 'none';
+  document.getElementById('btn-next').style.display = 'none';
 
   const badge = document.getElementById('badge-level');
   badge.textContent = LABELS[level];
-  badge.className   = 'badge-level badge-' + level;
+  badge.className = 'badge-level badge-' + level;
+
+  const pb = document.getElementById('points-badge');
+  pb.textContent = '+' + POINTS[level] + ' pontos';
+  pb.className = 'points-badge points-' + level;
 
   const fb = document.getElementById('feedback-box');
   fb.textContent = '';
-  fb.className   = '';
+  fb.className = '';
 
   const container = document.getElementById('options-container');
   container.innerHTML = '';
 
   q.opts.forEach((opt, i) => {
     const btn = document.createElement('button');
-    btn.className   = 'option-btn';
-    btn.textContent = opt;
-    btn.onclick     = () => selectAnswer(i);
+    btn.className = 'option-btn';
+    btn.innerHTML = '<span class="option-letter">' + LETTERS[i] + '</span>' + opt;
+    btn.onclick = () => selectAnswer(i);
     container.appendChild(btn);
   });
 }
@@ -348,21 +564,23 @@ function selectAnswer(index) {
   if (index === q.a) {
     score        += POINTS[level];
     correctCount += 1;
-    fb.textContent = '✓ Correto! ' + q.fb;
-    fb.className   = 'show-correct';
+    fb.innerHTML  = '<strong>Correto!</strong> ' + q.fb;
+    fb.className  = 'show-correct';
     document.getElementById('score-display').textContent = score + ' pts';
-    document.getElementById('btn-next').style.display    = 'block';
+    document.getElementById('btn-next').style.display = 'block';
+    updateStreakBar(current, true);
   } else {
     buttons[index].classList.add('wrong');
-    fb.textContent = '✗ Errado! ' + q.fb;
-    fb.className   = 'show-wrong';
+    fb.innerHTML = '<strong>Errado!</strong> ' + q.fb;
+    fb.className = 'show-wrong';
+    updateStreakBar(current, false);
 
     setTimeout(() => {
       document.getElementById('gameover-msg').textContent =
         'Você errou na pergunta ' + (current + 1) + ' de ' + sequence.length +
-        '. O jogo será reiniciado com novas perguntas. Tente novamente!';
+        '. O jogo reinicia com novas perguntas — tente de novo!';
       showScreen('screen-gameover');
-    }, 2200);
+    }, 2400);
   }
 }
 
@@ -377,17 +595,30 @@ function nextQuestion() {
 
 function showResult() {
   const pct = Math.round((correctCount / sequence.length) * 100);
-  let msg = '';
-  if (pct === 100) msg = 'Perfeito! Você domina o conteúdo de empreendedorismo!';
-  else if (pct >= 70) msg = 'Muito bem! Você tem um bom domínio do conteúdo.';
-  else if (pct >= 50) msg = 'Bom esforço! Revise os pontos em que errou e tente novamente.';
-  else msg = 'Continue estudando! O empreendedorismo tem muito a te oferecer.';
 
-  document.getElementById('final-score').textContent   = score + ' pts';
-  document.getElementById('result-msg').textContent    = msg;
-  document.getElementById('stat-correct').textContent  = correctCount;
-  document.getElementById('stat-pct').textContent      = pct + '%';
-  document.getElementById('progress-fill').style.width = '100%';
+  let icon, title, msg;
+  if (pct === 100) {
+    icon = '🏆'; title = 'Perfeito!';
+    msg = 'Você acertou tudo! Domínio completo sobre empreendedorismo. Excelente!';
+  } else if (pct >= 70) {
+    icon = '🎉'; title = 'Muito bem!';
+    msg = 'Você tem um bom domínio do conteúdo. Continue assim!';
+  } else if (pct >= 50) {
+    icon = '📚'; title = 'Bom esforço!';
+    msg = 'Mais da metade certa! Revise os pontos em que errou e tente superar sua pontuação.';
+  } else {
+    icon = '💪'; title = 'Continue estudando!';
+    msg = 'O empreendedorismo tem muito a te oferecer. Revise o conteúdo e tente novamente!';
+  }
+
+  document.getElementById('result-icon').textContent    = icon;
+  document.getElementById('result-title').textContent   = title;
+  document.getElementById('final-score').textContent    = score + ' pts';
+  document.getElementById('result-msg').textContent     = msg;
+  document.getElementById('stat-correct').textContent   = correctCount;
+  document.getElementById('stat-pct').textContent       = pct + '%';
+  document.getElementById('progress-fill').style.width  = '100%';
+  document.getElementById('progress-label').textContent = '100% concluído';
 
   showScreen('screen-result');
 }
